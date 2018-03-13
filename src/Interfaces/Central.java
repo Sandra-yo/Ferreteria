@@ -16,15 +16,16 @@ import javax.swing.JTabbedPane;
  * @author Aldair
  */
 public class Central extends JFrame{
-     public JTabbedPane tabbed;
+     
      public JMenuBar barra;
      public JMenu menu[];
      public JMenuItem items[];
      public String nombre[]={"Archivo","Configuracion","Extras"};
+     public Productos prod;
      
      public Central(){
+        //parte general del programa
          super ("Ferreteria");
-         tabbed= new JTabbedPane();
          menu = new JMenu[nombre.length];
          barra = new JMenuBar();
          
@@ -34,6 +35,8 @@ public class Central extends JFrame{
          }
          this.setJMenuBar(barra);
          
+         //Productos
+         prod= new Productos();
          
      }
     
