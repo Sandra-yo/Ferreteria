@@ -5,6 +5,8 @@
  */
 package Interfaces;
 
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -26,6 +28,7 @@ public class Central extends JFrame{
      public Central(){
         //parte general del programa
          super ("Ferreteria");
+         setLayout(new GridLayout(1,1));
          menu = new JMenu[nombre.length];
          barra = new JMenuBar();
          
@@ -38,6 +41,8 @@ public class Central extends JFrame{
          //Productos
          prod= new Productos();
          
+//         prod.panel.setBounds(null);
+         add(prod.panelC);
      }
     
 }
