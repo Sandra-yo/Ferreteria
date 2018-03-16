@@ -5,16 +5,16 @@
  */
 package PruebaProductos;
 
+
 import Interfaces.Central;
-import Interfaces.Productos;
 import java.awt.Frame;
 import javax.swing.JFrame;
-
+ 
 /**
  *
  * @author Aldair
  */
-public class TestProducto {
+public class TestProducto{
     public static void main(String[] args) {
         Central n= new Central();
         n.setExtendedState(JFrame.MAXIMIZED_BOTH);
