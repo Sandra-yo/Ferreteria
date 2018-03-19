@@ -41,8 +41,9 @@ public class Central extends JFrame{
          //Productos
          prod= new Productos();
          
-//         prod.panel.setBounds(null);
+         
          add(prod.panelC);
      }
+    
     
 }
