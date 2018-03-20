@@ -9,6 +9,8 @@ import baseDatos.ProductosBD;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Scrollbar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,13 +33,14 @@ public class Productos {
     public JTextField campos[];
     public JLabel titulos[];
     public JPanel panelC,panel1,panel2,panel3,panel4;
-    public ImageIcon imagen;
+    public ImageIcon imagen,nuevo,elim,busq;
     public JLabel image,nom;
     public JTable tabla;
     public DefaultTableModel dtm;
     public JTextArea text;
     public JScrollPane c;
     private ProductosBD productos;
+    private JButton agregar,borrar,buscar;
    
     public Productos(){
         panelC = new JPanel();
@@ -49,9 +52,13 @@ public class Productos {
         //clases
         productos = new ProductosBD();
         
-        //imagen
+        //imagenes
         imagen = new ImageIcon(getClass().getResource("../imagenes/notFound.jpg"));
         image = new JLabel(imagen);
+        nuevo = new ImageIcon("Agregar");
+        elim = new ImageIcon(getClass().getResource("../imagenes/trash.png"));
+        busq = new ImageIcon(getClass().getResource("../imagenes/search.png"));
+
         
         //tablas
         productos.agregarColumnas();
@@ -70,7 +77,22 @@ public class Productos {
         c = new JScrollPane(text);
         
         nom.setBounds(10,0,100,50);
-        c.setBounds(10,40,1345,100);
+        c.setBounds(10,40,1200,100);
+        
+        //botones
+        agregar = new JButton("Agregar");
+        agregar.setBounds(1220,40,100,30);
+        agregar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               agregarProducto();
+            }
+        });
+        borrar = new JButton("Eliminar");
+        borrar.setBounds(1220,80,100,30);
+        buscar = new JButton("Buscar");
+        buscar.setBounds(1220,120,100,30);
         
         campos = new JTextField[nombres.length];
         titulos= new JLabel[nombres.length];
@@ -86,6 +108,9 @@ public class Productos {
         panel1.add(image);
         panel3.add(nom);
         panel3.add(c);
+        panel3.add(agregar);
+        panel3.add(borrar);
+        panel3.add(buscar);        
         panel4.add(new JScrollPane(tabla));
         
         panelC.add(panel1);
@@ -96,6 +121,18 @@ public class Productos {
     }
      public void armarTablas(){
          tabla = new JTable(productos.llenarTabla());
+     }
+     public void agregarProducto(){
+         productos.setNombre(campos[1].getText());
+         productos.setCategoria(campos[2].getText());
+         productos.setCantidad(Integer.parseInt(campos[3].getText()));
+         productos.setCantidadMin(Integer.parseInt(campos[4].getText()));
+         productos.setPrecioU(Integer.parseInt(campos[5].getText()));
+         productos.setPrecioM(Integer.parseInt(campos[6].getText()));
+         productos.setPrecioP(Integer.parseInt(campos[7].getText()));
+         productos.agregar();
+         
+
      }
     
 }
