@@ -116,7 +116,7 @@ public class ProductosBD {
                 Statement st= conexion.createStatement();
                 ResultSet rs= st.executeQuery("select * from Productos");
                 while(rs.next()){
-                    Object fila[] = new Object[7];
+                    Object fila[] = new Object[8];
                     fila[0]=rs.getObject(1); 
                     fila[1]=rs.getObject(2); 
                     fila[2]=rs.getObject(3); 
@@ -124,7 +124,7 @@ public class ProductosBD {
                     fila[4]=rs.getObject(5); 
                     fila[5]=rs.getObject(6); 
                     fila[6]=rs.getObject(7); 
-                    //fila[7]=rs.getObject(8);
+                    fila[7]=rs.getObject(8);
                     
                     dtm.addRow(fila);
                     
@@ -163,5 +163,33 @@ public class ProductosBD {
         }
     }
     
+    public void borrarTabla(){
+        do{
+           dtm.removeRow(dtm.getRowCount()-1);
+        }while(dtm.getRowCount()!=0);
+    }
+    
+    public void actualizarTabla(){
+        borrarTabla();
+        
+    }
+    public void datosDelaTabla(int f,int c){
+        dtm.getValueAt(f, c);
+        System.out.println(dtm.getValueAt(f, c));
+        conectarBD();
+          String sql="select*from Productos where id=;"+id;
+       
+        try{
+            if(!conexion.isClosed()){
+                Statement st = conexion.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                
+            }
+        
+    }catch(Exception e){
+            System.err.println(e);
+        
+    }
+    }
     
 }
