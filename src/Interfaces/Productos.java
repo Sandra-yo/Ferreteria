@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -106,18 +109,51 @@ public class Productos {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-               agregarProducto();
+               if(campos[0].getText().length()==0){
+                  agregarProducto();
+               } else {
+                   for (int i = 0; i < campos.length; i++) {
+                       campos[i].setText("");
+                   }
+ 
+               }
+                
                
             }
         });
         borrar = new JButton("Eliminar");
         borrar.setBounds(1220,80,100,30);
+        borrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    borrarProducto();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Productos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+            }
+        });
         buscar = new JButton("Buscar");
         buscar.setBounds(1220,120,100,30);
+        buscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(campos[1].getText().length()!=0 ){
+                productos.borrarTabla();
+                productos.BuscarTabla("nombre", campos[1].getText());
+                
+                }else if(campos[2].getText().length()!=0){
+                productos.borrarTabla();
+                productos.BuscarTabla("categoria", campos[2].getText());
+                
+                }
+            }
+        });
         
         campos = new JTextField[nombres.length];
         titulos= new JLabel[nombres.length];
-       
+        
         
         for (int i= 0; i < nombres.length; i++) {
             campos[i]= new JTextField();
@@ -125,6 +161,8 @@ public class Productos {
             panelA.add(titulos[i]);
             panelA.add(campos[i]);
         }
+        campos[0].setEditable(false);
+        
         panel2.add(panelA);
         panelB.add(image);
         panel2.add(panelB);     
@@ -164,20 +202,27 @@ public class Productos {
          
 
      }
+     public void borrarProducto() throws SQLException{
+        productos.setId(Integer.parseInt(campos[0].getText()));
+        productos.borrar();
+        productos.actualizarTabla();
+        armarTablas();
+         
+     }
+    
      
       private class Escucha extends MouseAdapter {
            public void mouseClicked(MouseEvent evento) {
                try{
-                   System.out.println("Sss");
-                campos[0].setText(Integer.toString((int) dtm.getValueAt(tabla.getSelectedRow(), 0)));
-                campos[1].setText((String) prod.dtm.getValueAt(tabla.getSelectedRow(), 1));
-                campos[2].setText((String) prod.dtm.getValueAt(tabla.getSelectedRow(), 2));
-                campos[3].setText(Integer.toString((int) prod.dtm.getValueAt(tabla.getSelectedRow(), 3)));
-                campos[4].setText(Integer.toString((int) prod.dtm.getValueAt(tabla.getSelectedRow(), 4)));
-                campos[5].setText(Integer.toString((int) prod.dtm.getValueAt(tabla.getSelectedRow(), 5)));
-                campos[6].setText(Integer.toString((int) prod.dtm.getValueAt(tabla.getSelectedRow(), 6)));
-                campos[7].setText(Integer.toString((int) prod.dtm.getValueAt(tabla.getSelectedRow(), 7))); 
-               
+                campos[0].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 0)));
+                campos[1].setText((String) productos.dtm.getValueAt(tabla.getSelectedRow(), 1));
+                campos[2].setText((String) productos.dtm.getValueAt(tabla.getSelectedRow(), 2));
+                campos[3].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 3)));
+                campos[4].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 4)));
+                campos[5].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 5)));
+                campos[6].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 6)));
+                campos[7].setText(Integer.toString((int) productos.dtm.getValueAt(tabla.getSelectedRow(), 7))); 
+
                }catch(Exception e){
                    System.out.println(e);
                 }

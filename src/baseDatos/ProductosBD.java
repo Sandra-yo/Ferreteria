@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,6 +9,7 @@ import static baseDatos.Conexion.conectarBD;
 import static baseDatos.Conexion.conexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -129,6 +130,8 @@ public class ProductosBD {
                     dtm.addRow(fila);
                     
                 }
+                //JOptionPane.showMessageDialog(null,"Registro exitoso");
+            conexion.close();
             }
         }catch(Exception e){
             System.err.print(e);
@@ -155,12 +158,26 @@ public class ProductosBD {
                 ps.close();
                 JOptionPane.showMessageDialog(null,"Registro exitoso");
                 
-               
+               conexion.close();
             }
             
         }catch(Exception e){
             System.err.println(e);
         }
+    }
+    
+    public boolean borrar() throws SQLException{
+         conectarBD(); 
+         String sql="delete from Productos where id="+this.id;
+         if(Conexion.ejecutarSQLUpdate(sql)){
+             
+             JOptionPane.showMessageDialog(null,"Borrado exitoso");
+             conexion.close();
+             return true;
+         }else{
+             return false;
+         }
+         
     }
     
     public void borrarTabla(){
@@ -190,6 +207,36 @@ public class ProductosBD {
             System.err.println(e);
         
     }
+    }
+    public DefaultTableModel BuscarTabla(String tipo,String valor){
+            conectarBD();
+            String sql="select*from Productos where "+tipo+"= '"+valor+"'";
+            try{
+                if(!conexion.isClosed()){
+                    Statement st= conexion.createStatement();
+                    ResultSet rs=st.executeQuery(sql);
+                    while(rs.next()){
+                    Object fila[] = new Object[8];
+                    fila[0]=rs.getObject(1); 
+                    fila[1]=rs.getObject(2); 
+                    fila[2]=rs.getObject(3); 
+                    fila[3]=rs.getObject(4); 
+                    fila[4]=rs.getObject(5); 
+                    fila[5]=rs.getObject(6); 
+                    fila[6]=rs.getObject(7); 
+                    fila[7]=rs.getObject(8);
+                    
+                    dtm.addRow(fila);
+                    
+                    }
+                }
+            }catch(Exception e){
+                System.out.println(e);
+            }
+                
+            
+        return dtm;
+        
     }
     
 }
